@@ -3,6 +3,7 @@ package com.bridgelabz.greetingappdevlopment.controller;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.bridgelabz.greetingappdevlopment.model.Greeting;
+import com.bridgelabz.greetingappdevlopment.model.User;
 import com.bridgelabz.greetingappdevlopment.service.GreetingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,5 +41,13 @@ public class GreetingController {
     @GetMapping("/getMessage")
     public ResponseEntity<String> getMessage(){
         return new ResponseEntity<String>(greetingService.getMessage(), HttpStatus.OK);
+    }
+    @GetMapping("/getGreetingMessage")
+    public ResponseEntity<String>getGreetingMessage(@RequestParam(value="fName",defaultValue="World") String fName,@RequestParam(value="lName",defaultValue="") String lName){
+        return new ResponseEntity<String>(greetingService.getGreetingMessage(fName,lName),HttpStatus.OK);
+    }
+    @PostMapping("/post")
+    public ResponseEntity<String> getGreeting(@RequestBody User user){
+        return new ResponseEntity<String>(greetingService.postMessage(user.getfName(),user.getlName()),HttpStatus.OK);
     }
 }
