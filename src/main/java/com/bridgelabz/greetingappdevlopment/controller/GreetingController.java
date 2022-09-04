@@ -1,6 +1,7 @@
 package com.bridgelabz.greetingappdevlopment.controller;
 
-import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicInteger;
+
 
 import com.bridgelabz.greetingappdevlopment.model.Greeting;
 import com.bridgelabz.greetingappdevlopment.model.User;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class GreetingController {
     private static final String template="Hello %s";
-    private static AtomicLong counter=new AtomicLong();
+    private static AtomicInteger counter=new AtomicInteger();
 
     @Autowired
     GreetingService greetingService;
@@ -35,12 +36,12 @@ public class GreetingController {
         return new Greeting(counter.incrementAndGet(),String.format(template, greeting.getContent()));
     }
     @PutMapping("/putMapping/{counter}")
-    public Greeting sayHello(@PathVariable long counter,@RequestParam (value="content") String content) {
+    public Greeting sayHello(@PathVariable Integer counter,@RequestParam (value="content") String content) {
         return new Greeting(counter,String.format(template, content));
     }
     @GetMapping("/getMessage")
     public ResponseEntity<String> getMessage(){
-        return new ResponseEntity<String>(greetingService.getMessage(), HttpStatus.OK);
+        return new ResponseEntity<String>(greetingService.getMessage(),HttpStatus.OK);
     }
     @GetMapping("/getGreetingMessage")
     public ResponseEntity<String>getGreetingMessage(@RequestParam(value="fName",defaultValue="World") String fName,@RequestParam(value="lName",defaultValue="") String lName){
@@ -48,6 +49,14 @@ public class GreetingController {
     }
     @PostMapping("/post")
     public ResponseEntity<String> getGreeting(@RequestBody User user){
-        return new ResponseEntity<String>(greetingService.postMessage(user.getfName(),user.getlName()),HttpStatus.OK);
+        return new ResponseEntity<String>(greetingService.postMessage(user),HttpStatus.OK);
+    }
+    @PostMapping("/saveGreeting")
+    public ResponseEntity<Greeting> saveGreeting(@RequestBody Greeting greeting){
+        return new ResponseEntity<Greeting>(greetingService.saveMessage(greeting),HttpStatus.OK);
+    }
+    @GetMapping("/findGreeting")
+    public ResponseEntity<String> findGreeting(@RequestParam Integer id){
+        return new ResponseEntity<String>(greetingService.getData(id),HttpStatus.OK);
     }
 }
