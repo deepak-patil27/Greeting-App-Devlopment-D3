@@ -25,6 +25,12 @@ public class Greeting {
         this.id = id;
         this.content = content;
     }
+    public Integer getId() {
+        return id;
+    }
+    public void setId(Integer id) {
+        this.id = id;
+    }
     public String getContent() {
         return content;
     }
